@@ -1,16 +1,74 @@
-# React + Vite
+# Manual Comp Allocations
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Overview
+This page provides a responsive UI for manually allocating comps (EasyDine, Club Dollars, eComps, etc.) against a check subtotal.
 
-Currently, two official plugins are available:
+All interactions are **client-side only** and use **static/mock values** during development.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+The user can:
+- Enter amounts using a numeric pad dialog
+- Tap eComp cards to apply/remove comps
+- Auto-allocate using **Smart Allocate**
+- Reset all selections with **Reset**
 
-## React Compiler
+The UI automatically:
+- Calculates totals
+- Validates inputs
+- Displays helpful error/validation messages
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+---
 
-## Expanding the ESLint configuration
+## Features
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+### 1. Responsive POS-Style UI
+- Layout matches the provided mock/design.
+- Screen is responsive across typical POS resolutions.
+- eComps list is **horizontally scrollable**.
+
+### 2. Numeric Pad Dialog
+- Every amount field opens a **numeric pad** modal.
+- Supports:
+  - Digits (0–9)
+  - Decimal values up to **two decimal places**
+- Returns the entered value to the corresponding field.
+- Prevents invalid numeric format.
+
+### 3. Comp Cards (EasyDine, Club Dollars, eComps)
+Each comp item shows:
+- Label / Name
+- Balance / Amount
+- Expiration (if any)
+- Bottom label:
+  - Default: **"Tap to apply"**
+  - After applying: **"Applied"**
+
+When a comp is applied:
+- The card shows a **Selected / Applied** flag at the top.
+- The bottom label changes to **Applied**.
+- Applied amount becomes editable via numeric pad.
+
+### 4. Smart Allocate
+- Button: **Smart Allocate**
+- Behavior:
+  - Automatically selects comp items.
+  - Assigns amounts such that:
+    - **Total applied comps ≤ comp-eligible total**
+    - **Each applied amount ≤ item balance**
+  - Selection logic can be simple or randomized (for development), as long as it respects the comp-eligible total.
+
+### 5. Reset
+- Button: **Reset**
+- Clears:
+  - All applied amounts
+  - All selections
+  - All flags/labels
+- Resets totals to initial state.
+
+### 6. Live Calculations
+- **Charged to Comps**  
+  `= sum of all applied comp amounts`
+
+- **Remaining After Comps**  
+  `= Check Subtotal − Charged to Comps`
+
+
