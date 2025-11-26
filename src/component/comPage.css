@@ -5,7 +5,7 @@
 }
 
 :root {
-  --accent: #f6c948;
+  --accent: #fbcb49;
   --accent-border: #37c93b;
   --muted: #c6c6c6;
   --danger: #d9534f;
@@ -99,7 +99,6 @@ body {
 /* CARD (EasyDine / Club) */
 .card {
   background-color: #fff;
-  /* border: 0.2vh solid black; */
   border-radius: 1vh;
   margin: 1.5vh 0;
   padding: 0.5vh 2vw;
@@ -182,7 +181,6 @@ body {
 
 .ecomp-item {
   background-color: #fff;
-  /* border: 0.2vh solid black; */
   border-radius: 1vh;
   padding: 0.5vh 2vw;
   position: relative;
@@ -230,7 +228,7 @@ body {
   right: 0.1vw;
   font-size: 1.6vh;
   color:#333;
-  background-color:rgb(246, 182, 62);
+  background-color:rgb(250, 196, 96);
   padding: 0.2vh 4vw;
   border-radius: 0.8vh;
   font-weight: 600;
@@ -271,7 +269,7 @@ body {
   background: var(--accent);
   color: #222;
   border: 0.3vh solid var(--accent-border);
-  font-size: 2.6  vh;
+  font-size: 2.6vh;
   font-weight: 100;
   padding: 1vh 5vw;
   cursor: pointer;
@@ -535,7 +533,6 @@ body {
 .np-apply {
   width: 60%;
   padding: 1.6vh 0;
-  /* border-radius: 1vh; */
   background: #f6c948;               
   border: 0.3vh solid #37c93b;      
   font-size: 3.6vh;
@@ -544,8 +541,55 @@ body {
   box-shadow: 0 0.6vh 1.2vh rgba(0,0,0,0.08);
 }
 
-html, body {
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+/* Modal (Confirm) styles */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  z-index: 1200;
+  padding: 2vh 2vw;
 }
 
+.modal-card {
+  width: 82vw;
+  max-width: 520px;
+  background: #f6f6f6;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+  text-align: center;
+}
+
+.modal-title{
+  font-size: 2.8vh;
+}
+
+.modal-title .title{
+  font-weight: 700;
+  font-size: 2.8vh;
+  margin-bottom: 8px;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  margin-top: 4vh;
+  /* margin-bottom: 12px; */
+}
+
+.modal-btn {
+  flex: 0 0 46%;
+  padding: 12px 25px;
+  background: var(--accent);
+  border: 3px solid var(--accent-border);
+  font-size: 3vh;
+  cursor: pointer;
+}
+
+/* small helpers */
+.hidden { display:none; }

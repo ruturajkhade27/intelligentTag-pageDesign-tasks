@@ -1,4 +1,5 @@
 import React, { useState, useMemo } from "react";
+import "./comPage.css";
 import NumericPad from "./NumericPad.jsx";
 
 const MOCK_SUBTOTAL = 59.5;
@@ -19,7 +20,29 @@ function round2(n) {
   return Math.round((n + Number.EPSILON) * 100) / 100;
 }
 
-export default function AllocateCompsApp() {
+/* Confirm modal */
+function ConfirmModal({ visible, onAdjust, onProceed, chargedToComps, remaining }) {
+  if (!visible) return null;
+
+  return (
+    <div className="modal-overlay" role="dialog" aria-modal="true">
+      <div className="modal-card">
+        <div className="modal-title"><span className="title">Please note:</span> eComps used will fully cover the eligible food total. Any excess value is not retained for future use.
+          Proceed with this payment?</div>
+      </div>
+       <div className="modal-actions">
+          <button className="modal-btn modal-btn-adjust" onClick={onAdjust}>
+            Adjust
+          </button>
+          <button className="modal-btn modal-btn-proceed" onClick={onProceed}>
+            Proceed
+          </button>
+        </div>
+    </div>
+  );
+}
+
+export default function AllocateCompsApp({ onProceedExternal } = {}) {
   const [easyDine, setEasyDine] = useState(initialState.easyDine);
   const [club, setClub] = useState(initialState.club);
   const [eComps, setEComps] = useState(initialState.eComps);
@@ -28,6 +51,8 @@ export default function AllocateCompsApp() {
   const [npTarget, setNpTarget] = useState(null);
   const [npMax, setNpMax] = useState(Number.POSITIVE_INFINITY);
   const [npInitialValue, setNpInitialValue] = useState("");
+
+  const [showConfirm, setShowConfirm] = useState(false);
 
   const chargedToComps = useMemo(() => {
     const eSum = eComps.reduce((s, e) => s + Number(e.applied || 0), 0);
@@ -106,6 +131,23 @@ export default function AllocateCompsApp() {
           : { ...it, applied: 0, selected: false }
       )
     );
+  }
+
+  /* CONTINUE */
+  function handleContinueClick() {
+    setShowConfirm(true);
+  }
+  function handleAdjust() {
+    setShowConfirm(false);
+  }
+  function handleProceed() {
+    setShowConfirm(false);
+
+    if (typeof onProceedExternal === "function") {
+      onProceedExternal({ chargedToComps, remainingAfterComps });
+      return;
+    }
+    window.location.href = "/next-page";
   }
 
   return (
@@ -210,7 +252,7 @@ export default function AllocateCompsApp() {
               <div className="value">${remainingAfterComps.toFixed(2)}</div>
             </div>
           </div>
-          <button className="continue">CONTINUE</button>
+          <button className="continue" onClick={handleContinueClick}>CONTINUE</button>
         </div>
       </div>
 
@@ -232,6 +274,14 @@ export default function AllocateCompsApp() {
         title={npTarget ? `Enter amount for ${npTarget.type}` : "Enter amount"}
         onClose={() => setNpVisible(false)}
         onApply={onNpApply}
+      />
+
+      <ConfirmModal
+        visible={showConfirm}
+        onAdjust={handleAdjust}
+        onProceed={handleProceed}
+        chargedToComps={chargedToComps}
+        remaining={remainingAfterComps}
       />
     </div>
   );
